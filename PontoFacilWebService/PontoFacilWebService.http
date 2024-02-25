@@ -1,0 +1,6 @@
+@PontoFacilWebService_HostAddress = http://localhost:5007
+
+GET {{PontoFacilWebService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
