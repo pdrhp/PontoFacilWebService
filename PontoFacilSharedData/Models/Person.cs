@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using authenticationApi.Models;
 using PontoFacilWebService.Constants;
 
-namespace PontoFacilWebService.Models;
+namespace PontoFacilSharedData.Models;
 
 public class Person
 {

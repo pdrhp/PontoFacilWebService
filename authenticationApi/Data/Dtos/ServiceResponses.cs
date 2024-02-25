@@ -1,4 +1,4 @@
-using authenticationApi.Models;
+using PontoFacilSharedData.Models;
 
 namespace authenticationApi.Data.Dtos;
 

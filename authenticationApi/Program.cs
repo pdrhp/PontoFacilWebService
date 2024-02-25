@@ -1,12 +1,13 @@
 using System.Text;
 using authenticationApi.Data;
 using authenticationApi.Interfaces;
-using authenticationApi.Models;
 using authenticationApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using PontoFacilSharedData.Data;
+using PontoFacilSharedData.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,9 +15,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connString = builder.Configuration["ConnectionStrings:AuthenticationConnection"];
 
-builder.Services.AddDbContext<AuthenticationDbContext>(opts =>
+builder.Services.AddDbContext<PontoFacilDbContext>(opts =>
 {
-    opts.UseSqlServer(connString);
+    opts.UseSqlServer(connString, b => b.MigrationsAssembly("PontoFacilWebService"));
 });
 
 builder.Services.AddScoped<IMapperService, MapperService>();
@@ -25,7 +26,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services
     .AddIdentity<User, IdentityRole>()
-    .AddEntityFrameworkStores<AuthenticationDbContext>()
+    .AddEntityFrameworkStores<PontoFacilDbContext>()
     .AddDefaultTokenProviders();
 
 

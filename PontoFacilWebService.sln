@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PontoFacilWebService", "Pon
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "authenticationApi", "authenticationApi\authenticationApi.csproj", "{F10CCBA3-6B29-47CF-A61A-4A651BD331AF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PontoFacilSharedData", "PontoFacilSharedData\PontoFacilSharedData.csproj", "{4446BF41-84D9-4A9D-8F43-2BF2347CDB6D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{F10CCBA3-6B29-47CF-A61A-4A651BD331AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F10CCBA3-6B29-47CF-A61A-4A651BD331AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F10CCBA3-6B29-47CF-A61A-4A651BD331AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4446BF41-84D9-4A9D-8F43-2BF2347CDB6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4446BF41-84D9-4A9D-8F43-2BF2347CDB6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4446BF41-84D9-4A9D-8F43-2BF2347CDB6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4446BF41-84D9-4A9D-8F43-2BF2347CDB6D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

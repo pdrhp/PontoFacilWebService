@@ -1,6 +1,5 @@
 using authenticationApi.Data.Dtos;
 using authenticationApi.Interfaces;
-using authenticationApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace authenticationApi.Controllers;

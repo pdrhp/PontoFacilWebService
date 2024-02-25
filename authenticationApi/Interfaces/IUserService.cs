@@ -1,5 +1,4 @@
 using authenticationApi.Data.Dtos;
-using authenticationApi.Models;
 
 namespace authenticationApi.Interfaces;
 

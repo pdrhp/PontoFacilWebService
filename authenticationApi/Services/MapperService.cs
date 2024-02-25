@@ -1,6 +1,6 @@
 using authenticationApi.Data.Dtos;
 using authenticationApi.Interfaces;
-using authenticationApi.Models;
+using PontoFacilSharedData.Models;
 
 namespace authenticationApi.Services;
 

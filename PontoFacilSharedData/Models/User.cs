@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace authenticationApi.Models;
+namespace PontoFacilSharedData.Models;
 
 public class User : IdentityUser
 {

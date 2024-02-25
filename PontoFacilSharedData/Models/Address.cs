@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PontoFacilWebService.Models;
+namespace PontoFacilSharedData.Models;
 
 public class Address
 {

@@ -3,7 +3,6 @@ using System.Security.Claims;
 using System.Text;
 using authenticationApi.Data.Dtos;
 using authenticationApi.Interfaces;
-using authenticationApi.Models;
 using Microsoft.IdentityModel.Tokens;
 
 namespace authenticationApi.Services;

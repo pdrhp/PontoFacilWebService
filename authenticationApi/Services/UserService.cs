@@ -1,7 +1,7 @@
 using authenticationApi.Data.Dtos;
 using authenticationApi.Interfaces;
-using authenticationApi.Models;
 using Microsoft.AspNetCore.Identity;
+using PontoFacilSharedData.Models;
 
 namespace authenticationApi.Services;
 
