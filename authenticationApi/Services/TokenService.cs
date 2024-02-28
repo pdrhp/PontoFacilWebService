@@ -1,9 +1,9 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using authenticationApi.Data.Dtos;
 using authenticationApi.Interfaces;
 using Microsoft.IdentityModel.Tokens;
+using PontoFacilSharedData.Data.Dtos;
 
 namespace authenticationApi.Services;
 
@@ -22,7 +22,6 @@ public class TokenService : ITokenService
         {
             new Claim("username", userSession.Name),
             new Claim("id", userSession.Id),
-            new Claim("dateOfBirth", userSession.DataNascimento),
             new Claim(ClaimTypes.Role, userSession.Role),
             new Claim("loginTimeStamp", DateTime.UtcNow.ToString())
         };

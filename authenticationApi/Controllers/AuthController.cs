@@ -1,6 +1,6 @@
-using authenticationApi.Data.Dtos;
 using authenticationApi.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using PontoFacilSharedData.Data.Dtos;
 
 namespace authenticationApi.Controllers;
 
@@ -30,6 +30,7 @@ public class AuthController : ControllerBase
         {
             return BadRequest(response);
         }
+        
 
         return Created("Sucesso", response);
     }

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace authenticationApi.Data.Dtos;
+namespace PontoFacilSharedData.Data.Dtos;
 
 public class LoginUserDto
 {

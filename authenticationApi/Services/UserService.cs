@@ -1,7 +1,10 @@
-using authenticationApi.Data.Dtos;
 using authenticationApi.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using PontoFacilSharedData.Data;
+using PontoFacilSharedData.Data.Dtos;
+using PontoFacilSharedData.Interfaces;
 using PontoFacilSharedData.Models;
+using PontoFacilWebService.Interfaces;
 
 namespace authenticationApi.Services;
 
@@ -12,20 +15,29 @@ public class UserService : IUserService
     private RoleManager<IdentityRole> _roleManager;
     private IMapperService _mapperService;
     private ITokenService _tokenService;
+    private IAddressService _addressService;
+    private IPersonService _personService;
     
     
-    public UserService(SignInManager<User> signInManager, UserManager<User> userManager, IMapperService mapperService, ITokenService tokenService, RoleManager<IdentityRole> roleManager)
+    public UserService(SignInManager<User> signInManager, UserManager<User> userManager, IMapperService mapperService, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IPersonService personService, IAddressService addressService)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _mapperService = mapperService;
         _tokenService = tokenService;
         _roleManager = roleManager;
+        _personService = personService;
+        _addressService = addressService;
     }
     
     
     public async Task<RegisterResponse> SignUpUser(CreateUserDto userDto)
     {
+        if (userDto is null)
+        {
+            throw new ArgumentException("usuario não pode ser nulo");
+        }
+        
         if (userDto.Password != userDto.RePassword)
         {
             throw new BadHttpRequestException("As senhas não conferem!");
@@ -51,7 +63,17 @@ public class UserService : IUserService
 
         await _userManager.AddToRoleAsync(newUser, "Employee");
         
-        return new RegisterResponse(true, "Usuário cadastrado com sucesso!", newUser);
+        var createdUser = await _userManager.FindByEmailAsync(userDto.Email);
+        
+        var createdAddress = await _addressService.CreateAddress(userDto.AddressDto);
+        
+        if(createdUser is not null && createdAddress is not null)
+        {
+            var createdPerson =
+                await _personService.CreatePerson(userDto.PersonDto, createdAddress.EnderecoId, createdUser.Id);
+        }
+        
+        return new RegisterResponse(true, "Usuário cadastrado com sucesso!", createdUser);
     }
 
     public async Task<RegisterResponse> SignUpSuperUser(CreateUserDto userDto)
@@ -94,7 +116,7 @@ public class UserService : IUserService
 
         var getUserRole = await _userManager.GetRolesAsync(usuario);
 
-        var userSession = new UserSession(usuario.Id, usuario.UserName,usuario.DataNascimento.ToString(),getUserRole.FirstOrDefault());
+        var userSession = new UserSession(usuario.Id, usuario.UserName,getUserRole.FirstOrDefault());
         
         var token = _tokenService.GenerateToken(userSession);
 

@@ -1,5 +1,4 @@
 using System.Text;
-using authenticationApi.Data;
 using authenticationApi.Interfaces;
 using authenticationApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -7,7 +6,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using PontoFacilSharedData.Data;
+using PontoFacilSharedData.Interfaces;
+using PontoFacilSharedData.Mapper;
 using PontoFacilSharedData.Models;
+using PontoFacilWebService.Interfaces;
+using PontoFacilWebService.Repository;
+using PontoFacilWebService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +27,10 @@ builder.Services.AddDbContext<PontoFacilDbContext>(opts =>
 builder.Services.AddScoped<IMapperService, MapperService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IAddressService, AddressService>();
+builder.Services.AddScoped<IPersonService, PersonService>();
+builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 
 builder.Services
     .AddIdentity<User, IdentityRole>()
@@ -42,7 +50,7 @@ builder.Services.AddAuthentication(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuerSigningKey = true,
+        ValidateIssuerSigningKey = true,    
         IssuerSigningKey =
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["SymmetricSecurityKey"])),
         ValidateAudience = false,

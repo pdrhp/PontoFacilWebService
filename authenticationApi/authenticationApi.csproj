@@ -51,6 +51,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PontoFacilSharedData\PontoFacilSharedData.csproj" />
+    <ProjectReference Include="..\PontoFacilWebService\PontoFacilWebService.csproj" />
   </ItemGroup>
   
 </Project>

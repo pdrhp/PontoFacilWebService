@@ -1,4 +1,4 @@
-using authenticationApi.Data.Dtos;
+using PontoFacilSharedData.Data.Dtos;
 
 namespace authenticationApi.Interfaces;
 

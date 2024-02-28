@@ -3,6 +3,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using PontoFacilSharedData.Data;
+using PontoFacilSharedData.Interfaces;
+using PontoFacilSharedData.Mapper;
+using PontoFacilWebService.Interfaces;
+using PontoFacilWebService.Repository;
+using PontoFacilWebService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +20,12 @@ builder.Services.AddDbContext<PontoFacilDbContext>(opts =>
 {
     opts.UseSqlServer(connString, b => b.MigrationsAssembly("PontoFacilWebService"));
 });
+
+builder.Services.AddScoped<IMapperService, MapperService>();
+builder.Services.AddScoped<IAddressService, AddressService>();
+builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+builder.Services.AddScoped<IPersonService, PersonService>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
