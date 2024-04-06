@@ -3,7 +3,7 @@ using PontoFacilSharedData.Models;
 
 namespace PontoFacilWebService.Interfaces;
 
-public interface IEmployeeRepository
+public interface IEmployeeService
 {
-    Task<Employee> NewEmployee(Employee employee);
+    Task<Employee> CreateEmployee(CreateEmployeeDto employeeDto, int personId);
 }

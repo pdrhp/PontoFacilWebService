@@ -13,4 +13,6 @@ public class PontoFacilDbContext : IdentityDbContext<User>
     
     public DbSet<Person> Person { get; set; }
     public DbSet<Address> Address { get; set; }
+    public DbSet<Employee> Employees { get; set; }
+    public DbSet<TimeRecord> TimeRecords { get; set; }
 }

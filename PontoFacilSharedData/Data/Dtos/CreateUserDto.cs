@@ -18,9 +18,12 @@ public class CreateUserDto
     [Required]
     [Compare("Password")]
     public string RePassword { get; set; }
-    
+    [Required]
     public CreatePersonDto PersonDto { get; set; }
-    
+    [Required]
+    public CreateEmployeeDto EmployeeDto { get; set; }
+    [Required]
     public CreateAddressDto AddressDto { get; set; }
+    
 
 }

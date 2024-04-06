@@ -69,4 +69,23 @@ public class MapperService : IMapperService
 
         return readPersonDtos;
     }
+
+    public Employee MapEmployeeDtoToEmployee(CreateEmployeeDto employeeDto, int personId)
+    {
+        return new Employee
+        {
+            Cargo = employeeDto.Cargo,
+            Salario = employeeDto.Salario,
+            PersonId = personId
+        };
+    }
+
+    public TimeRecord CreateEntryTimeRecord(DateTime entryTime, int employeeId)
+    {
+        return new TimeRecord
+        {
+            EmployeeId = employeeId,
+            EntryTime = entryTime
+        };
+    }
 }

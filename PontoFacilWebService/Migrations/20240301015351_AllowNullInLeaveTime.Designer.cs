@@ -12,8 +12,8 @@ using PontoFacilSharedData.Data;
 namespace PontoFacilWebService.Migrations
 {
     [DbContext(typeof(PontoFacilDbContext))]
-    [Migration("20240228224750_AddEmployeeAndTimeRecord")]
-    partial class AddEmployeeAndTimeRecord
+    [Migration("20240301015351_AllowNullInLeaveTime")]
+    partial class AllowNullInLeaveTime
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -179,6 +179,31 @@ namespace PontoFacilWebService.Migrations
                     b.ToTable("Address");
                 });
 
+            modelBuilder.Entity("PontoFacilSharedData.Models.Employee", b =>
+                {
+                    b.Property<int>("EmployeeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeId"));
+
+                    b.Property<string>("Cargo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PersonId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Salario")
+                        .HasColumnType("real");
+
+                    b.HasKey("EmployeeId");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("Employees");
+                });
+
             modelBuilder.Entity("PontoFacilSharedData.Models.Person", b =>
                 {
                     b.Property<int>("Id")
@@ -215,6 +240,30 @@ namespace PontoFacilWebService.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Person");
+                });
+
+            modelBuilder.Entity("PontoFacilSharedData.Models.TimeRecord", b =>
+                {
+                    b.Property<int>("RecordId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RecordId"));
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EntryTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LeaveTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("RecordId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("TimeRecords");
                 });
 
             modelBuilder.Entity("PontoFacilSharedData.Models.User", b =>
@@ -333,6 +382,17 @@ namespace PontoFacilWebService.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PontoFacilSharedData.Models.Employee", b =>
+                {
+                    b.HasOne("PontoFacilSharedData.Models.Person", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Person");
+                });
+
             modelBuilder.Entity("PontoFacilSharedData.Models.Person", b =>
                 {
                     b.HasOne("PontoFacilSharedData.Models.Address", "Address")
@@ -350,6 +410,17 @@ namespace PontoFacilWebService.Migrations
                     b.Navigation("Address");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PontoFacilSharedData.Models.TimeRecord", b =>
+                {
+                    b.HasOne("PontoFacilSharedData.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
                 });
 #pragma warning restore 612, 618
         }

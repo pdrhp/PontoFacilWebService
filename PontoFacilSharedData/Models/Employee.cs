@@ -15,7 +15,4 @@ public class Employee
     [ForeignKey("Person")]
     public int PersonId { get; set; }
     public virtual Person Person { get; set; }
-    
-    
-    
 }

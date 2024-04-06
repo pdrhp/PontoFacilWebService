@@ -17,9 +17,10 @@ public class UserService : IUserService
     private ITokenService _tokenService;
     private IAddressService _addressService;
     private IPersonService _personService;
+    private IEmployeeService _employeeService;
     
     
-    public UserService(SignInManager<User> signInManager, UserManager<User> userManager, IMapperService mapperService, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IPersonService personService, IAddressService addressService)
+    public UserService(SignInManager<User> signInManager, UserManager<User> userManager, IMapperService mapperService, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IPersonService personService, IAddressService addressService, IEmployeeService employeeService)
     {
         _signInManager = signInManager;
         _userManager = userManager;
@@ -28,10 +29,11 @@ public class UserService : IUserService
         _roleManager = roleManager;
         _personService = personService;
         _addressService = addressService;
+        _employeeService = employeeService;
     }
     
     
-    public async Task<RegisterResponse> SignUpUser(CreateUserDto userDto)
+    public async Task<IGeneralResponse> SignUpUser(CreateUserDto userDto)
     {
         if (userDto is null)
         {
@@ -71,16 +73,20 @@ public class UserService : IUserService
         {
             var createdPerson =
                 await _personService.CreatePerson(userDto.PersonDto, createdAddress.EnderecoId, createdUser.Id);
+            if (createdPerson is not null)
+            {
+                var createdEmployee = await _employeeService.CreateEmployee(userDto.EmployeeDto, createdPerson.Id);
+            }
         }
         
         return new RegisterResponse(true, "Usuário cadastrado com sucesso!", createdUser);
     }
 
-    public async Task<RegisterResponse> SignUpSuperUser(CreateUserDto userDto)
+    public async Task<IGeneralResponse> SignUpSuperUser(CreateUserDto userDto)
     {
         if(userDto.Password != userDto.RePassword)
         {
-            throw new BadHttpRequestException("As senhas não conferem!");
+            return new ErrorResponse(false, "As senhas não conferem!");
         }
 
         User newUser = _mapperService.MapUserDtoToUser(userDto);
@@ -102,14 +108,15 @@ public class UserService : IUserService
         return new RegisterResponse(true, "Admnistrador cadastrado com sucesso", newUser);
     }
 
-    public async Task<LoginResponse> SignInUser(LoginUserDto dto)
+    public async Task<IGeneralResponse> SignInUser(LoginUserDto dto)
     {
         var resultado = await _signInManager.PasswordSignInAsync(dto.Username, dto.Password, false, false);
         
         
+        
         if (!resultado.Succeeded)
         {
-            throw new ApplicationException("Usuario não autenticado!");
+            return new ErrorResponse(false, "Falha ao autenticar usuário!");
         }
 
         var usuario = _signInManager.UserManager.Users.FirstOrDefault(user => user.NormalizedUserName == dto.Username.ToUpper());
@@ -120,6 +127,27 @@ public class UserService : IUserService
         
         var token = _tokenService.GenerateToken(userSession);
 
-        return new LoginResponse(true, token, "usuario Autenticado com sucesso!");
+        return new LoginResponse(true, "usuario Autenticado com sucesso!",token, usuario.Id);
+    }
+
+    public async Task<IGeneralResponse> GetRole(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        
+        
+        var roles = await _userManager.GetRolesAsync(user);
+        return new GetRoleResponse(true, "Role encontrada com sucesso!", roles.ToList());
+    }
+
+    public IGeneralResponse ValidateToken(string token)
+    {
+        var tokenValidation = _tokenService.ValidateToken(token);
+        if(tokenValidation == false)
+        {
+            return new ValidateTokenResponse(true, "Token inválido!", false, token);
+        }
+        
+        
+        return new ValidateTokenResponse(true, "Token válido!", true, token);
     }
 }

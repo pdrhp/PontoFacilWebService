@@ -13,5 +13,5 @@ public class TimeRecord
     public int EmployeeId { get; set; }
     public virtual Employee Employee { get; set; }
     public DateTime EntryTime { get; set; }
-    public DateTime LeaveTime { get; set; }
+    public DateTime? LeaveTime { get; set; }
 }

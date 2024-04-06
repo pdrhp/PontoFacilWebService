@@ -27,10 +27,25 @@ builder.Services.AddDbContext<PontoFacilDbContext>(opts =>
 builder.Services.AddScoped<IMapperService, MapperService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IAddressService, AddressService>();
-builder.Services.AddScoped<IPersonService, PersonService>();
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+builder.Services.AddScoped<IAddressService, AddressService>();
 builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+builder.Services.AddScoped<IPersonService, PersonService>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<ITimeRecordRepository, TimeRecordRepository>();
+builder.Services.AddScoped<ITimeRecordService, TimeRecordService>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("pontoFacil", policyBuilder =>
+    {
+        policyBuilder.WithOrigins("http://localhost:3000");
+        policyBuilder.AllowAnyHeader();
+        policyBuilder.AllowAnyMethod();
+        policyBuilder.AllowCredentials();
+    });
+});
 
 builder.Services
     .AddIdentity<User, IdentityRole>()
@@ -50,7 +65,7 @@ builder.Services.AddAuthentication(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuerSigningKey = true,    
+        ValidateIssuerSigningKey = true,
         IssuerSigningKey =
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["SymmetricSecurityKey"])),
         ValidateAudience = false,
@@ -61,7 +76,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddAuthorization();
-    
+
 
 var app = builder.Build();
 
@@ -79,6 +94,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors("pontoFacil");
 
 app.Run();
 

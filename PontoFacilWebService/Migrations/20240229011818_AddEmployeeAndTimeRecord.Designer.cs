@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PontoFacilSharedData.Data;
 
@@ -11,9 +12,11 @@ using PontoFacilSharedData.Data;
 namespace PontoFacilWebService.Migrations
 {
     [DbContext(typeof(PontoFacilDbContext))]
-    partial class PontoFacilDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240229011818_AddEmployeeAndTimeRecord")]
+    partial class AddEmployeeAndTimeRecord
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -253,7 +256,7 @@ namespace PontoFacilWebService.Migrations
                     b.Property<DateTime>("EntryTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("LeaveTime")
+                    b.Property<DateTime>("LeaveTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("RecordId");

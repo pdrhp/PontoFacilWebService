@@ -15,6 +15,20 @@ public class TokenService : ITokenService
     {
         _configuration = configuration;
     }
+    
+    private TokenValidationParameters GetValidationParameters()
+    {
+        return new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey =
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SymmetricSecurityKey"])),
+            ValidateAudience = false,
+            ValidateIssuer = false,
+            ClockSkew = TimeSpan.Zero,
+            ValidateLifetime = true
+        };
+    }
 
     public string GenerateToken(UserSession userSession)
     {
@@ -29,7 +43,8 @@ public class TokenService : ITokenService
         var chave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SymmetricSecurityKey"]));
 
         var signInCrendentials = new SigningCredentials(chave, SecurityAlgorithms.HmacSha256);
-
+        
+        
         var token = new JwtSecurityToken
         (
             expires: DateTime.Now.AddHours(5),
@@ -38,5 +53,21 @@ public class TokenService : ITokenService
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    public bool ValidateToken(string token)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var validationParameters = GetValidationParameters();
+
+        try
+        {
+            tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 }
