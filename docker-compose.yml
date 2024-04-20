@@ -1,0 +1,34 @@
+﻿services:
+  pontofacilservice:
+    image: authenticationapi
+    build:
+      context: .
+      dockerfile: authenticationApi/Dockerfile
+    ports:
+      - 8000:8080
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    depends_on: ["pontofacilservice-db"]
+    networks: 
+      pontofacilservice-network:
+  
+  pontofacilservice-db:
+    image: mcr.microsoft.com/azure-sql-edge
+    environment:
+      - "ACCEPT_EULA=1"
+      - "MSSQL_SA_PASSWORD=SuaSenha"
+    volumes:
+      - livros-api-db-azure-edge:/var/opt/mssql
+    networks: 
+      pontofacilservice-network:
+        aliases:
+          - "sql"
+
+
+volumes: 
+  livros-api-db-azure-edge:
+    
+
+networks:
+  pontofacilservice-network:
+    driver: bridge
