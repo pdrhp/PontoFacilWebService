@@ -21,11 +21,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var enviroment = builder.Environment;
 
-if (enviroment.IsDevelopment())
-{
-    builder.Configuration.AddUserSecrets<Program>();
-}
-else
+if(enviroment.IsProduction())
 {
     var vaultUri = builder.Configuration["Vault:Uri"];
     var vaultToken = builder.Configuration["Vault:Token"];
@@ -43,6 +39,9 @@ else
         builder.Configuration[secret.Key] = secret.Value.ToString();
     }
 }
+
+var teste1 = builder.Configuration["ConnectionStrings:AuthenticationConnection"];
+var teste2 = builder.Configuration["SymmetricSecurityKey"];
 
 
 builder.Services.AddDbContext<PontoFacilDbContext>(opts =>
