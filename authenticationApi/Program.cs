@@ -12,16 +12,42 @@ using PontoFacilSharedData.Models;
 using PontoFacilWebService.Interfaces;
 using PontoFacilWebService.Repository;
 using PontoFacilWebService.Services;
+using VaultSharp;
+using VaultSharp.V1.AuthMethods.Token;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
-var connString = builder.Configuration["ConnectionStrings:AuthenticationConnection"];
+// Add services to the container.
+var enviroment = builder.Environment;
+
+if (enviroment.IsDevelopment())
+{
+    builder.Configuration.AddUserSecrets<Program>();
+}
+else
+{
+    var vaultUri = builder.Configuration["Vault:Uri"];
+    var vaultToken = builder.Configuration["Vault:Token"];
+
+    var vaultClientSettings = new VaultClientSettings(vaultUri, new TokenAuthMethodInfo(vaultToken));
+    var vaultClient = new VaultClient(vaultClientSettings);
+
+    var secrets = vaultClient.V1.Secrets.KeyValue.V1.ReadSecretAsync(
+        path: "secrets",
+        mountPoint: "pontofacil"
+    ).Result.Data;
+
+    foreach (var secret in secrets)
+    {
+        builder.Configuration[secret.Key] = secret.Value.ToString();
+    }
+}
+
 
 builder.Services.AddDbContext<PontoFacilDbContext>(opts =>
 {
-    opts.UseSqlServer(connString, b => b.MigrationsAssembly("PontoFacilWebService"));
+    opts.UseSqlServer(builder.Configuration["ConnectionStrings:AuthenticationConnection"], b => b.MigrationsAssembly("PontoFacilWebService"));
 });
 
 builder.Services.AddScoped<IMapperService, MapperService>();

@@ -20,6 +20,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.3.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="VaultSharp" Version="1.13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
