@@ -23,8 +23,8 @@ var enviroment = builder.Environment;
 
 if(enviroment.IsProduction())
 {
-    var vaultUri = builder.Configuration["Vault:Uri"];
-    var vaultToken = builder.Configuration["Vault:Token"];
+    var vaultUri = builder.Configuration["Vault_URI"];
+    var vaultToken = builder.Configuration["Vault_TOKEN"];
 
     var vaultClientSettings = new VaultClientSettings(vaultUri, new TokenAuthMethodInfo(vaultToken));
     var vaultClient = new VaultClient(vaultClientSettings);

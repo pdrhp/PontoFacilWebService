@@ -5,9 +5,11 @@
       context: .
       dockerfile: authenticationApi/Dockerfile
     ports:
-      - 8000:8080
+      - 6000:8080
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - Vault_URI=https://your-vault-server:8200
+      - Vault_TOKEN=your-vault-token
     depends_on: ["pontofacilservice-db"]
     networks: 
       pontofacilservice-network:
