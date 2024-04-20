@@ -40,10 +40,6 @@ if(enviroment.IsProduction())
     }
 }
 
-var teste1 = builder.Configuration["ConnectionStrings:AuthenticationConnection"];
-var teste2 = builder.Configuration["SymmetricSecurityKey"];
-
-
 builder.Services.AddDbContext<PontoFacilDbContext>(opts =>
 {
     opts.UseSqlServer(builder.Configuration["ConnectionStrings:AuthenticationConnection"], b => b.MigrationsAssembly("PontoFacilWebService"));
