@@ -44,9 +44,6 @@
   <ItemGroup>
     <Content Remove="Mappers\**" />
     <Content Remove="Services\Mappers\**" />
-    <Content Include="..\.dockerignore">
-      <Link>.dockerignore</Link>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>
